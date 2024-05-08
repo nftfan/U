@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verified Fans</title>
+    <style>
+        body {
+            background-color: #1e1e1e;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            font-size: 10px;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            background-color: #333333;
+            padding: 20px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 16px;
+        }
+        .user-name {
+            padding: 10px;
+            background-color: #444444;
+            margin-bottom: 5px;
+            border-radius: 5px;
+            position: relative;
+            padding-left: 20px;
+            cursor: pointer; /* Change cursor to pointer for better UX */
+        }
+        .user-name:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 10px;
+            height: 100%;
+            border-radius: 5px 0 0 5px;
+        }
+        .user-name.WINNER:before {
+            background-color: #f9bf1a; /* Yellow */
+        }
+        .user-name.SENT:before {
+            background-color: #5f9bf2; /* Blue */
+        }
+        .user-name.PENDING:before {
+            background-color: #ff6347; /* Tomato */
+        }
+        .user-name.LEVEL:before {
+            background-color: #32cd32; /* Lime Green */
+        }
+        .user-name.BITCOIN:before {
+            background-color: #d3d3d3; /* Light Grey */
+        }
+        .user-name-text {
+            word-break: break-all;
+        }
+        .user-link {
+            color: #d3d3d3; /* Grey text color for the user link */
+            text-decoration: none; /* Remove default underline */
+        }
+        .icon {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+        }
+        .custom-icon {
+            position: absolute;
+            top: 50%;
+            right: 40px;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+        }
+    </style>
+</head>
+<body style="max-width: 800px; margin: 0 auto;">
+    <div class="header">
+        <h1>Verified Fans</h1>
+    </div>
+
+    <div id="usersContainer">
+        <!-- User names will be dynamically added here -->
+    </div>
+
+    <script>
+        // Define data for each status
+        var statusData = [
+            { status: "WINNER", dataString: `@CryptoNft2011
+@Starboy1132` },
+            { status: "SENT", dataString: `@Jubayer60435292
+@RidoyKh10740948
+@riojashwa
+@fuhoune
+@Mimiya15001
+@ShahjadaSarkar
+@Riwansaputra3
+@jook9009
+@aku_eth
+@Rhul97138516
+@nusratshimu2301
+@Crypto_Eaunth
+@Rafsan94628035
+@Ryuutany
+@Jitu75338553
+@SabbirA83
+@rida_ratu
+@FvDhifa` },
+            { status: "PENDING", dataString: `@Pending1
+@Pending2
+@Pending3` },
+            { status: "LEVEL", dataString: `@Level01
+@Level02
+@Level03` },
+            { status: "BITCOIN", dataString: `@BitcoinUser1
+@BitcoinUser2
+@BitcoinUser3` }
+        ];
+
+        // Function to shuffle array randomly
+        function shuffleArray(array) {
+            for (var i = array.length - 1; i > 0; i--) {
+                var j = Math.floor(Math.random() * (i + 1));
+                var temp = array[i];
+                array[i] = array[j];
+                array[j] = temp;
+            }
+            return array;
+        }
+
+        // Get the container to hold user names
+        var usersContainer = document.getElementById("usersContainer");
+
+        // Collect all user names into one array
+        var allUsers = [];
+        statusData.forEach(function(statusObj) {
+            var users = statusObj.dataString.split('\n');
+            allUsers = allUsers.concat(users);
+        });
+
+        // Shuffle all user names
+        shuffleArray(allUsers);
+
+        // Function to create user name elements
+        function createUserElements(userArray) {
+            userArray.forEach(function(user) {
+                // Trim the user name
+                user = user.trim();
+
+                // Create a div element for the user name
+                var userDiv = document.createElement("div");
+                userDiv.className = "user-name";
+
+                // Create a div for user name text
+                var userNameDiv = document.createElement("div");
+                userNameDiv.className = "user-name-text";
+
+                // Create a link for the user name
+                var userLink = document.createElement("a");
+                userLink.href = "https://twitter.com/" + user.substring(1); // Removing '@' symbol
+                userLink.target = "_blank";
+                userLink.textContent = user;
+                userLink.className = "user-link"; // Add user link class
+
+                // Add the user link to the user name div
+                userNameDiv.appendChild(userLink);
+                userDiv.appendChild(userNameDiv);
+
+                // Determine and add status class to user div
+                statusData.forEach(function(statusObj) {
+                    var users = statusObj.dataString.split('\n');
+                    if (users.includes(user)) {
+                        userDiv.classList.add(statusObj.status);
+                    }
+                });
+
+                // If the user is a winner, add the provided icon
+                if (user === "@YourCustomUser") {
+                    var customIcon = document.createElement("img");
+                    customIcon.src = "path/to/your/custom/icon.png";
+                    customIcon.alt = "Custom Icon";
+                    customIcon.className = "custom-icon";
+                    userDiv.appendChild(customIcon);
+                } else if (userDiv.classList.contains("LEVEL")) {
+                    var levelIcon = document.createElement("img");
+                    levelIcon.src = "https://blush-rear-pig-836.mypinata.cloud/ipfs/QmYMHuucrwx2AUErZz3hxsBiY9HToP8wKGixHarcouAGRW";
+                    levelIcon.alt = "Level Icon";
+                    levelIcon.className = "icon";
+                    userDiv.appendChild(levelIcon);
+                } else if (userDiv.classList.contains("BITCOIN")) {
+                    var bitcoinIcon = document.createElement("img");
+                    bitcoinIcon.src = "https://blush-rear-pig-836.mypinata.cloud/ipfs/QmSztSMnC9icHN63n7g4ErJyKh2BAVCsg7VPeZvnTPWhsU";
+                    bitcoinIcon.alt = "Bitcoin Icon";
+                    bitcoinIcon.className = "icon";
+                    userDiv.appendChild(bitcoinIcon);
+                }
+
+                // Append the user div to the container
+                usersContainer.appendChild(userDiv);
+            });
+        }
+
+        // Create user elements
+        createUserElements(allUsers);
+    </script>
+</body>
+</html>
